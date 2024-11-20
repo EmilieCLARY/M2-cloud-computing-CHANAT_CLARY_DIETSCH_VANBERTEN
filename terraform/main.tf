@@ -6,7 +6,7 @@ data "azuread_user" "user" {
 }
 
 data "github_user" "user" {
-  username = var.github_handle
+  username = lower(var.github_handle)
 }
 
 resource "azurerm_resource_group" "week_3" {
@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "week_3" {
 locals {
   resource_group = azurerm_resource_group.week_3.name
   location       = azurerm_resource_group.week_3.location
-  app_name       = "examples-api-${var.github_handle}"
+  app_name       = "examples-api-${lower(var.github_handle)}"
 }
 
 module "examples_api_service" {
@@ -62,6 +62,12 @@ module "database" {
   database_administrator_login    = local.database.username
   database_administrator_password = local.database.password
   database_name                   = local.database.name
+}
+
+module "vnet" {
+  source = "./modules/vnet"
+  resource_group_name = local.resource_group
+  location            = local.location
 }
 
 locals {

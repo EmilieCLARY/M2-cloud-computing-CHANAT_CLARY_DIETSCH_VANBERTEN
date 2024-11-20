@@ -6,10 +6,9 @@ variable "location" {
 
 variable "resource_group_name" {
   type        = string
-  default     = "week-3"
+  default     = "cloud-computing-project"
   description = "Name of the resource group in which all resource are grouped"
 }
-
 
 #########
 # Flags #
