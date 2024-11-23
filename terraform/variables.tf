@@ -1,3 +1,13 @@
+variable "vnet_name" {
+  default = "junia-vnet"
+}
+variable "postgres_name" {
+  default = "junia-postgres"
+}
+variable "storage_account_name" {
+  default = "juniastorageacct"
+}
+
 variable "location" {
   type        = string
   default     = "francecentral"
@@ -153,6 +163,12 @@ variable "storage_name" {
   type        = string
   default     = null
   description = "Name of the storage account"
+}
+
+variable "api_subnet_name" {
+  type        = string
+  default     = "api-subnet"
+  description = "Name of the subnet for the API service"
 }
 
 

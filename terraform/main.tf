@@ -44,6 +44,7 @@ module "examples_api_service" {
     NEW_RELIC_LICENSE_KEY = var.new_relic_licence_key
     NEW_RELIC_APP_NAME    = local.app_name
   }
+
 }
 
 module "database" {
@@ -62,14 +63,27 @@ module "database" {
   database_administrator_login    = local.database.username
   database_administrator_password = local.database.password
   database_name                   = local.database.name
+
+  virtual_network_id  = module.vnet.vnet_id
+
+  subnet_id = module.vnet.database_subnet_id
 }
+
+resource "azurerm_virtual_network" "main" {
+  name                = var.vnet_name
+  location            = "francecentral"  # Remplace par la région correcte
+  resource_group_name = var.resource_group_name
+  address_space       = ["10.0.0.0/16"]  # Remplace par l'adresse correcte
+}
+
 
 module "vnet" {
-  source = "./modules/vnet"
+  source              = "./modules/vnet"
   resource_group_name = local.resource_group
   location            = local.location
+  vnet_name           = var.vnet_name
+  api_subnet_name     = var.api_subnet_name
 }
-
 locals {
   database_connection = {
     host = try(module.database[0].server_address, null)
@@ -88,6 +102,8 @@ module "api_storage" {
 
   service_principal_id = var.enable_storage_read_for_api ? module.examples_api_service[0].principal_id : null
   user_principal_id    = var.enable_storage_read_for_user ? data.azuread_user.user.object_id : null
+
+  subnet_id = module.vnet.api_subnet_id
 }
 
 locals {

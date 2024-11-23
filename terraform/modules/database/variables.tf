@@ -64,3 +64,11 @@ variable "database_name" {
   nullable = false
   description = "Name for the database within the server"
 }
+
+variable "virtual_network_id" {
+  description = "ID du réseau virtuel utilisé pour la configuration DNS privée"
+}
+
+variable "subnet_id" {
+  description = "ID du sous-réseau utilisé pour la base de données"
+}
