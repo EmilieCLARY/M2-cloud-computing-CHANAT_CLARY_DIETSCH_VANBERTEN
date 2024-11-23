@@ -1,0 +1,115 @@
+name: Cloud_Computing_Project
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  check_service:
+    ## This job will run on every pull request and push to main branch
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      ## I found this on the internet, it is a custom action that installs uv
+      ## Giving u the link if you wanna check it out : 
+      ## https://github.com/yezz123/setup-uv
+      - uses: yezz123/setup-uv@v4
+      - run: uv --version
+      - name: Install dependencies
+        run: uv sync
+      - name: Build Project
+        run: uv build
+      - name: Running unit tests
+        run: uv run pytest tests/
+
+  build_docker_image:
+    ## This job will run only on push to main branch (when merging a PR)
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          ## Raw value latest is used to get the latest docker image
+          ## Although we also sha to ensure that the image is unique (and that we don't overwrite the latest image)
+          tags: |
+            type=ref,event=branch
+            type=sha
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # Impossible to deploy infrastructure as I don't have access to Azure app registration portal : 
+  # Here is the error message when trying to create CLIENT_ID, CLIENT_SECRET : Your administrator has disabled the App registrations experience in the Azure portal.
+
+  # So I will just comment the code below, but it should work if you have access to the Azure app registration portal and then add secrets to Github repo
+
+
+  ########################################################################################
+  # NOTE THAT THIS CODE BELOW HAS BEEN PROVIDED KINDLY BY PAUL MARLIOT AND HIS TEAMMATES #
+  ########################################################################################
+
+
+  # deploy_infrastructure:
+  #   needs: build_docker_image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: 1.5.5
+
+  #     - name: Navigate to infrastructure folder
+  #       run: cd infrastructure
+
+  #     - name: Initialize Terraform
+  #       run: terraform init
+
+  #     - name: Validate Terraform
+  #       run: terraform validate
+
+  #     - name: Apply Terraform
+  #       env:
+  #         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #         ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  #         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #       run: terraform apply -auto-approve
