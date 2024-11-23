@@ -1,7 +1,7 @@
 /resources/
 .vscode/
-/terraform/.terraform/
-/terraform/.tfstate/
+/infrastructure/.terraform/
+/infrastructure/.tfstate/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
