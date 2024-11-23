@@ -2,6 +2,11 @@
 .vscode/
 /infrastructure/.terraform/
 /infrastructure/.tfstate/
+/example/
+.python-version
+Dockerfile
+pyproject.toml
+uv.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
