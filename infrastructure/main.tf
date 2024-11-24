@@ -20,6 +20,7 @@ locals {
   app_name       = "examples-api-${lower(var.github_handle)}"
 }
 
+# Create the API service
 module "examples_api_service" {
   source = "./modules/app_service"
   count  = var.enable_api ? 1 : 0
@@ -32,6 +33,7 @@ module "examples_api_service" {
   docker_image        = "fhuitelec/examples-api:2.1.0"
   docker_registry_url = "https://ghcr.io"
 
+  # App settings
   app_settings = {
     DATABASE_HOST     = local.database_connection.host
     DATABASE_PORT     = local.database_connection.port
@@ -44,10 +46,12 @@ module "examples_api_service" {
     NEW_RELIC_APP_NAME    = local.app_name
   }
 
+  # New Relic settings
   new_relic_license_key = var.new_relic_licence_key
   new_relic_app_name    = local.app_name
 }
 
+# Create the database
 module "database" {
   source = "./modules/database"
   count  = var.enable_database ? 1 : 0
@@ -55,6 +59,7 @@ module "database" {
   resource_group_name = local.resource_group
   location            = local.location
 
+  # Database settings
   entra_administrator_tenant_id      = data.azurerm_subscription.current.tenant_id
   entra_administrator_object_id      = data.azuread_user.user.object_id
   entra_administrator_principal_type = "User"
@@ -65,11 +70,13 @@ module "database" {
   database_administrator_password = local.database.password
   database_name                   = local.database.name
 
+  # Virtual network settings for the database
   virtual_network_id  = module.vnet.vnet_id
   subnet_id           = module.vnet.database_subnet_id
   allowed_ip_address  = var.allowed_ip_address
 }
 
+# Create the virtual network
 resource "azurerm_virtual_network" "main" {
   name                = var.vnet_name
   location            = "francecentral"  # Remplace par la région correcte
@@ -77,12 +84,14 @@ resource "azurerm_virtual_network" "main" {
   address_space       = ["10.0.0.0/16"]  # Remplace par l'adresse correcte
 }
 
-
+# Create the subnet
 module "vnet" {
   source              = "./modules/vnet"
   resource_group_name = local.resource_group
   location            = local.location
   vnet_name           = var.vnet_name
+
+  # Subnet api settings
   api_subnet_name     = var.api_subnet_name
 }
 locals {
@@ -92,6 +101,7 @@ locals {
   }
 }
 
+# Create the storage account
 module "api_storage" {
   source = "./modules/storage"
   count  = var.enable_storage ? 1 : 0
@@ -105,13 +115,13 @@ module "api_storage" {
   user_principal_id    = var.enable_storage_read_for_user ? data.azuread_user.user.object_id : null
   app_service_principal_id = var.enable_storage_read_for_app_service ? module.examples_api_service[0].principal_id : null
 
+  # Subnet storage
   subnet_id = module.vnet.api_subnet_id
 }
 
 locals {
   storage_url = try(module.api_storage[0].url, null)
 }
-
 output "api_service_principal_id" {
   value       = module.examples_api_service[0].principal_id
   description = "Principal ID of the API App service's managed identity"

@@ -1,3 +1,4 @@
+# Purpose: Create a virtual network with two subnets, one for the database and one for the API.
 resource "azurerm_virtual_network" "main" {
   name                = var.vnet_name
   location            = var.location
@@ -5,6 +6,7 @@ resource "azurerm_virtual_network" "main" {
   address_space       = ["10.0.0.0/16"]
 }
 
+# Create a subnet for the database with a service delegation for PostgreSQL
 resource "azurerm_subnet" "database" {
   name                 = "database-subnet"
   resource_group_name  = var.resource_group_name
@@ -25,6 +27,7 @@ resource "azurerm_subnet" "database" {
   
 }
 
+# Create a subnet for the API
 resource "azurerm_subnet" "api" {
   name                 = var.api_subnet_name
   resource_group_name  = var.resource_group_name
