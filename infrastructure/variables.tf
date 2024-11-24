@@ -131,6 +131,11 @@ The password must contain characters from three of the following categories:
 EOT
 }
 
+variable "allowed_ip_address" {
+  type        = string
+  description = "IP address allowed to access the PostgreSQL database"
+}
+
 resource "random_password" "database_password" {
   length      = 24
   min_special = 1

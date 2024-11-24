@@ -66,8 +66,8 @@ module "database" {
   database_name                   = local.database.name
 
   virtual_network_id  = module.vnet.vnet_id
-
-  subnet_id = module.vnet.database_subnet_id
+  subnet_id           = module.vnet.database_subnet_id
+  allowed_ip_address  = var.allowed_ip_address
 }
 
 resource "azurerm_virtual_network" "main" {

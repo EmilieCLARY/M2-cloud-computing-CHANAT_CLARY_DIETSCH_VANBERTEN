@@ -72,3 +72,8 @@ variable "virtual_network_id" {
 variable "subnet_id" {
   description = "ID du sous-réseau utilisé pour la base de données"
 }
+
+variable "allowed_ip_address" {
+  type        = string
+  description = "IP address allowed to access the PostgreSQL database"
+}

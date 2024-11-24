@@ -45,10 +45,17 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgres" {
 }
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_all" {
-  name             = "AllowAll"
+  name             = "AllowSpecificIP"
   server_id        = azurerm_postgresql_flexible_server.playground_computing.id
-  start_ip_address = "0.0.0.0"
-  end_ip_address   = "255.255.255.255"
+  start_ip_address = var.allowed_ip_address
+  end_ip_address   = var.allowed_ip_address
+}
+
+resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_vnet" {
+  name             = "AllowVNet"
+  server_id        = azurerm_postgresql_flexible_server.playground_computing.id
+  start_ip_address = "10.0.0.0"
+  end_ip_address   = "10.255.255.255"
 }
 
 resource "azurerm_postgresql_flexible_server_database" "database" {
