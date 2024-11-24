@@ -70,3 +70,4 @@ The repository is organized into the following directories :
 ## Current Issues
 
 1. There is an issue affecting continuous deployment (CD). To authorize the CI/CD pipeline to perform deployments, we need specific keys (CLIENT_ID and CLIENT_SECRET). However, with our current Azure for Students accounts, we are unable to obtain these keys. As a result, the deployment part of the CI/CD process is commented out in the `main.yml` file.
+2. The gateway doesn't seem to work and it times out. We are currently investigating the cause of this issue, but as of now, the gateway is not functioning as expected, leading to timeouts when trying to establish a connection. In consequences, we made possible the access the /quotes and the / to access the API. The database is still under a DNS rule making it only possible to access throught vnet network. 
