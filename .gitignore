@@ -5,7 +5,6 @@
 # Ignore files
 /resources/
 .python-version
-uv.lock
 /infrastructure/terraform.tfvars
 
 # Byte-compiled / optimized / DLL files
