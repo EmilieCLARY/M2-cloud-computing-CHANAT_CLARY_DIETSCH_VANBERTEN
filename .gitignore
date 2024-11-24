@@ -4,7 +4,6 @@
 
 # Ignore files
 /resources/
-.python-version
 /infrastructure/terraform.tfvars
 
 # Byte-compiled / optimized / DLL files
