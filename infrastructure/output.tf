@@ -29,8 +29,3 @@ output "vnet_id" {
   value       = module.vnet.vnet_id
   description = "The ID of the virtual network"
 }
-
-output "log_analytics_workspace_id" {
-  value       = azurerm_log_analytics_workspace.main.id
-  description = "The ID of the Log Analytics workspace"
-}
