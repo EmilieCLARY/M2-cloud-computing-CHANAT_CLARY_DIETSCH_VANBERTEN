@@ -93,6 +93,8 @@ module "vnet" {
 
   # Subnet api settings
   api_subnet_name     = var.api_subnet_name
+  storage_subnet_name = var.storage_subnet_name
+  gateway_subnet_name = var.gateway_subnet_name
 }
 locals {
   database_connection = {
@@ -116,12 +118,30 @@ module "api_storage" {
   app_service_principal_id = var.enable_storage_read_for_app_service ? module.examples_api_service[0].principal_id : null
 
   # Subnet storage
-  subnet_id = module.vnet.api_subnet_id
+  subnet_id = module.vnet.storage_subnet_id
 }
 
 locals {
   storage_url = try(module.api_storage[0].url, null)
 }
+
+module "gateway" {
+  source                   = "./modules/gateway"
+  resource_group_name      = local.resource_group
+  physical_location        = local.location
+  vnet_name                = var.vnet_name
+  gateway_subnet_name      = var.gateway_subnet_name
+  gateway_subnet_id        = module.vnet.gateway_subnet_id
+  public_ip_name           = var.public_ip_name
+  application_gateway_name = var.application_gateway_name
+  app_service_fqdn         = var.app_service_fqdn
+}
+
+output "application_gateway_ip" {
+  value       = module.gateway.application_gateway_ip
+  description = "Public IP address of the Application Gateway"
+}
+
 output "api_service_principal_id" {
   value       = module.examples_api_service[0].principal_id
   description = "Principal ID of the API App service's managed identity"

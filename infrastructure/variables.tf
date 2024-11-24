@@ -163,10 +163,40 @@ variable "api_subnet_name" {
   description = "Name of the subnet for the API service"
 }
 
+variable "storage_subnet_name" {
+  type        = string
+  default     = "storage-subnet"
+  description = "Name of the subnet for the storage account"
+}
+
 variable "log_analytics_workspace_name" {
   type        = string
   default     = "example-workspace"
   description = "Name of the Log Analytics workspace"
+}
+
+variable "public_ip_name" {
+  type        = string
+  default     = "gateway-public-ip"
+  description = "Public IP name for the gateway"
+}
+
+variable "gateway_subnet_name" {
+  type        = string
+  default     = "gateway-subnet"
+  description = "Name of the subnet for the gateway"
+}
+
+variable "application_gateway_name" {
+  type        = string
+  default     = "application-gateway"
+  description = "Name of the application gateway"
+}
+
+variable "app_service_fqdn" {
+  type        = string
+  default     = "app-service.example.com"
+  description = "FQDN of the app service"
 }
 
 

@@ -35,6 +35,22 @@ resource "azurerm_subnet" "api" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
+# Create a subnet for the storage account
+resource "azurerm_subnet" "storage" {
+  name                 = var.storage_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.3.0/24"]
+}
+
+# Create a subnet for the gateway
+resource "azurerm_subnet" "gateway" {
+  name                 = var.gateway_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.4.0/24"]
+}
+
 output "database_subnet_id" {
   value = azurerm_subnet.database.id
 }
@@ -45,4 +61,12 @@ output "vnet_id" {
 
 output "api_subnet_id" {
   value = azurerm_subnet.api.id
+}
+
+output "storage_subnet_id" {
+  value = azurerm_subnet.storage.id
+}
+
+output "gateway_subnet_id" {
+  value = azurerm_subnet.gateway.id
 }

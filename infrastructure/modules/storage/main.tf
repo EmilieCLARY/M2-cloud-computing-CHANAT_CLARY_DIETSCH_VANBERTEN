@@ -1,4 +1,3 @@
-# Purpose: This file is used to create a storage account and container in Azure. It also assigns the necessary roles to the service principal, user principal, and app service principal.
 resource "azurerm_storage_account" "storage" {
   name                     = var.storage_account_name
   resource_group_name      = var.resource_group_name
@@ -7,28 +6,30 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = "LRS"
 }
 
-# Create a container in the storage account
 resource "azurerm_storage_container" "container" {
   name                  = var.container_name
   storage_account_name  = var.storage_account_name
   container_access_type = "private"
+
+  depends_on = [azurerm_storage_account.storage]
 }
 
-# Assign the Storage Blob Data Reader role to the service principal, user principal, and app service principal
 resource "azurerm_role_assignment" "service_binding" {
-  count = var.service_principal_id != null ? 1 : 0
-
   scope                = azurerm_storage_account.storage.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = var.service_principal_id
-}
-resource "azurerm_role_assignment" "user_binding" {
-  count = var.user_principal_id != null ? 1 : 0
 
+  depends_on = [var.service_principal_id]
+}
+
+resource "azurerm_role_assignment" "user_binding" {
   scope                = azurerm_storage_account.storage.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = var.user_principal_id
+
+  depends_on = [var.user_principal_id]
 }
+
 resource "azurerm_role_assignment" "app_service_binding" {
   count = var.app_service_principal_id != null ? 1 : 0
 
