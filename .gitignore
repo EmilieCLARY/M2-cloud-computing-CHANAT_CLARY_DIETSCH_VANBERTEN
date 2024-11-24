@@ -4,7 +4,6 @@
 
 # Ignore files
 /resources/
-/tests/
 .python-version
 Dockerfile
 uv.lock
