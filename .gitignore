@@ -7,7 +7,6 @@
 /tests/
 .python-version
 Dockerfile
-pyproject.toml
 uv.lock
 /infrastructure/terraform.tfvars
 
