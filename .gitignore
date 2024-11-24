@@ -2,6 +2,15 @@
 /infrastructure/.terraform/
 /infrastructure/.tfstate/
 
+# Ignore files
+/resources/
+/tests/
+.python-version
+Dockerfile
+pyproject.toml
+uv.lock
+/infrastructure/terraform.tfvars
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
