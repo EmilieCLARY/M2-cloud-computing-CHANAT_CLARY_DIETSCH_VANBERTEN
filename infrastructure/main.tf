@@ -82,6 +82,8 @@ resource "azurerm_virtual_network" "main" {
   location            = "francecentral"  # Remplace par la région correcte
   resource_group_name = var.resource_group_name
   address_space       = ["10.0.0.0/16"]  # Remplace par l'adresse correcte
+
+  depends_on = [ azurerm_resource_group.week_3 ]
 }
 
 # Create the subnet
