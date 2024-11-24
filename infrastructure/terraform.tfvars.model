@@ -1,0 +1,12 @@
+// Please copy this file to terraform.tfvars and fill in the values
+email_address   = ""
+github_handle   = ""
+allowed_ip_address = ""
+subscription_id = ""
+new_relic_licence_key = ""
+
+enable_database      = true
+enable_api           = true
+enable_storage       = true
+enable_storage_read_for_user = true
+enable_storage_read_for_api  = true

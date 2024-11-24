@@ -81,7 +81,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  # Impossible to deploy infrastructure as I don't have access to Azure app registration portal : 
+  # Impossible to deploy infrastructure as we don't have access to Azure app registration portal : 
   # Here is the error message when trying to create CLIENT_ID, CLIENT_SECRET : Your administrator has disabled the App registrations experience in the Azure portal.
 
   # So I will just comment the code below, but it should work if you have access to the Azure app registration portal and then add secrets to Github repo
