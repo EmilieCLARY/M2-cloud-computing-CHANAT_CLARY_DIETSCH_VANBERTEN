@@ -41,10 +41,11 @@ module "examples_api_service" {
 
     STORAGE_ACCOUNT_URL = local.storage_url
 
-    NEW_RELIC_LICENSE_KEY = var.new_relic_licence_key
     NEW_RELIC_APP_NAME    = local.app_name
   }
 
+  new_relic_license_key = var.new_relic_licence_key
+  new_relic_app_name    = local.app_name
 }
 
 module "database" {

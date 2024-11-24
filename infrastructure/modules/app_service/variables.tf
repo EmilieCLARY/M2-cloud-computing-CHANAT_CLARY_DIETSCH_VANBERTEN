@@ -48,3 +48,14 @@ variable "app_settings" {
   default = {}
   type = map(string)
 }
+
+variable "new_relic_license_key" {
+  type        = string
+  sensitive   = true
+  description = "New Relic license key used by the app service container to publish logs & metrics."
+}
+
+variable "new_relic_app_name" {
+  type        = string
+  description = "Name of the application in New Relic."
+}

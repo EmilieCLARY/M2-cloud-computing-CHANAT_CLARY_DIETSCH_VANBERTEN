@@ -6,3 +6,4 @@ enable_api           = true  # Enables the HTTP API
 enable_storage       = true # Set this to true if you also want to enable blob storage
 enable_storage_read_for_user = true
 enable_storage_read_for_api  = true
+new_relic_licence_key = "eu01xx640899b44fb714adc66bbddf21FFFFNRAL"

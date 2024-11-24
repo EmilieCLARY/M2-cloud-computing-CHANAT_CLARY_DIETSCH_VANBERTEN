@@ -148,7 +148,7 @@ resource "random_password" "database_password" {
 variable "new_relic_licence_key" {
   type        = string
   sensitive   = true
-  default     = null
+  default     = "eu01xx640899b44fb714adc66bbddf21FFFFNRAL"
   description = <<EOT
 New relic licence key used by the app service container to publish logs & metrics.
 
@@ -158,7 +158,6 @@ To retrieve it, go to https://send.bitwarden.com/#bX2ytcWjUUSvJrIAAXayPA/RVbs3ob
 The Bitwarden password will be displayed in class.
 EOT
 }
-
 
 ###########
 # Storage #
@@ -175,6 +174,12 @@ variable "api_subnet_name" {
   type        = string
   default     = "api-subnet"
   description = "Name of the subnet for the API service"
+}
+
+variable "log_analytics_workspace_name" {
+  type        = string
+  default     = "example-workspace"
+  description = "Name of the Log Analytics workspace"
 }
 
 

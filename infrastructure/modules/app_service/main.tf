@@ -11,7 +11,10 @@ resource "azurerm_linux_web_app" "app_service" {
   resource_group_name = var.resource_group_name
   location            = azurerm_service_plan.app_service.location
   service_plan_id     = azurerm_service_plan.app_service.id
-  app_settings        = var.app_settings
+  app_settings        = merge(var.app_settings, {
+    "NEW_RELIC_LICENSE_KEY" = var.new_relic_license_key
+    "NEW_RELIC_APP_NAME"    = var.new_relic_app_name
+  })
 
   identity {
     type = "SystemAssigned"
