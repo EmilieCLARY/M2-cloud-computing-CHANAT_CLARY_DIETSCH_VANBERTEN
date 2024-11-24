@@ -55,6 +55,12 @@ variable "enable_storage_read_for_api" {
   description = "Whether to enable IAM blob storage reader role binding for the API service"
 }
 
+variable "enable_storage_read_for_app_service" {
+  type        = bool
+  default     = false
+  description = "Whether to enable IAM blob storage reader role binding for the app service"
+}
+
 
 ############
 # Identity #

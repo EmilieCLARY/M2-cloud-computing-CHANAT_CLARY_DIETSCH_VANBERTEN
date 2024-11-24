@@ -102,10 +102,31 @@ module "api_storage" {
 
   service_principal_id = var.enable_storage_read_for_api ? module.examples_api_service[0].principal_id : null
   user_principal_id    = var.enable_storage_read_for_user ? data.azuread_user.user.object_id : null
+  app_service_principal_id = var.enable_storage_read_for_app_service ? module.examples_api_service[0].principal_id : null
 
   subnet_id = module.vnet.api_subnet_id
 }
 
 locals {
   storage_url = try(module.api_storage[0].url, null)
+}
+
+output "api_service_principal_id" {
+  value       = module.examples_api_service[0].principal_id
+  description = "Principal ID of the API App service's managed identity"
+}
+
+output "user_principal_id" {
+  value       = data.azuread_user.user.object_id
+  description = "Principal ID of the user"
+}
+
+output "service_principal_id" {
+  value       = var.enable_storage_read_for_api ? module.examples_api_service[0].principal_id : null
+  description = "Principal ID of the service principal for the API"
+}
+
+output "app_service_principal_id" {
+  value       = var.enable_storage_read_for_app_service ? module.examples_api_service[0].principal_id : null
+  description = "Principal ID of the app service"
 }

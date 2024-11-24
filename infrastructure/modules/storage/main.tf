@@ -13,17 +13,25 @@ resource "azurerm_storage_container" "container" {
 }
 
 resource "azurerm_role_assignment" "service_binding" {
-  //count = var.service_principal_id != null ? 1 : 0
+  count = var.service_principal_id != null ? 1 : 0
 
-  scope                = resource.azurerm_storage_container.container.resource_manager_id
+  scope                = azurerm_storage_account.storage.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = var.service_principal_id
 }
 
 resource "azurerm_role_assignment" "user_binding" {
-  //count = var.user_principal_id != null ? 1 : 0
+  count = var.user_principal_id != null ? 1 : 0
 
-  scope                = resource.azurerm_storage_container.container.resource_manager_id
+  scope                = azurerm_storage_account.storage.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = var.user_principal_id
+}
+
+resource "azurerm_role_assignment" "app_service_binding" {
+  count = var.app_service_principal_id != null ? 1 : 0
+
+  scope                = azurerm_storage_account.storage.id
+  role_definition_name = "Storage Blob Data Reader"
+  principal_id         = var.app_service_principal_id
 }
