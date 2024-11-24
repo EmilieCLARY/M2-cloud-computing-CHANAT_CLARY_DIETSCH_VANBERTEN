@@ -36,7 +36,7 @@ The following technologies were used in this project:
 - **Terraform**: For infrastructure as code to automate the deployment and management of cloud resources.
 - **Azure**: As the cloud service provider for hosting the infrastructure.
 - **PostgreSQL**: For the managed database service.
-- **HTTP API**: Built using a suitable framework (e.g., Express.js for Node.js) to handle client requests.
+- **HTTP API**: Built using a suitable framework to handle client requests.
 - **New Relic**: For monitoring and logging to ensure the infrastructure's health and performance.
 - **Azure Storage**: For storing application data and backups.
 - **Azure Virtual Network**: For creating a secure and isolated network environment.
